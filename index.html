@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#123b2b">
+  <title>Smart Plant Monitor</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">🌱</div>
+    <div>
+      <p class="eyebrow">IOT PLANT CARE</p>
+      <h1>Smart Plant Monitor</h1>
+    </div>
+    <span class="cloud-pill"><span class="dot"></span> Cloud dashboard</span>
+  </header>
+
+  <main class="container">
+    <section class="welcome">
+      <div>
+        <p class="eyebrow">YOUR PLANT, FROM ANYWHERE</p>
+        <h2>Plant health at a glance</h2>
+        <p class="subtext">Live sensor readings delivered through your ESP8266 and ThingSpeak.</p>
+      </div>
+      <div class="plant-art" aria-hidden="true">🪴</div>
+    </section>
+
+    <section class="status-row">
+      <div>
+        <span class="label">Overall soil status</span>
+        <strong id="plantStatus">Waiting for data…</strong>
+        <p id="statusMessage" class="muted">Connect your device and configure the channel below.</p>
+      </div>
+      <div class="update-box">
+        <span class="label">Last data received</span>
+        <strong id="lastUpdated">Not available</strong>
+        <span id="connectionState" class="connection offline">Not connected</span>
+      </div>
+    </section>
+
+    <section class="cards">
+      <article class="metric-card temp">
+        <div class="metric-top"><span class="metric-icon">🌡️</span><span class="label">Temperature</span></div>
+        <div class="metric-value"><span id="temperature">—</span><small>°C</small></div>
+        <p>Air temperature near your plant</p>
+      </article>
+      <article class="metric-card humidity">
+        <div class="metric-top"><span class="metric-icon">💧</span><span class="label">Air humidity</span></div>
+        <div class="metric-value"><span id="humidity">—</span><small>%</small></div>
+        <p>Moisture in the surrounding air</p>
+      </article>
+      <article class="metric-card soil">
+        <div class="metric-top"><span class="metric-icon">🌿</span><span class="label">Soil moisture</span></div>
+        <div class="metric-value"><span id="soilMoisture">—</span><small>%</small></div>
+        <div class="progress"><span id="soilBar"></span></div>
+        <p id="soilHint">Calibrate your sensor for a useful percentage.</p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div><p class="eyebrow">RECENT HISTORY</p><h3>Sensor trends</h3></div>
+        <label class="select-label">History
+          <select id="historyCount">
+            <option value="20">Last 20 readings</option>
+            <option value="50">Last 50 readings</option>
+            <option value="100">Last 100 readings</option>
+          </select>
+        </label>
+      </div>
+      <div class="chart-wrap"><canvas id="historyChart"></canvas></div>
+      <p class="muted small">Charts use the readings stored in your ThingSpeak channel.</p>
+    </section>
+
+    <details class="settings panel">
+      <summary>⚙️ Channel settings</summary>
+      <p class="muted">Enter your ThingSpeak channel ID. If the channel is private, enter its Read API Key. Never put your Write API Key on this website.</p>
+      <div class="settings-grid">
+        <label>Channel ID<input id="channelId" inputmode="numeric" placeholder="e.g. 1234567"></label>
+        <label>Read API Key (private channel only)<input id="readKey" autocomplete="off" placeholder="Optional for public channels"></label>
+      </div>
+      <button id="saveSettings" class="button">Save settings and load data</button>
+      <span id="settingsMessage" class="muted small"></span>
+    </details>
+
+    <section class="note">
+      <strong>Important:</strong> This dashboard shows the most recent data received by ThingSpeak. If the ESP8266 loses power or internet access, the last values remain visible but become stale. The status indicator will warn you when readings are old.
+    </section>
+    <footer>Smart Plant Monitoring System · TY ECE Project</footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
